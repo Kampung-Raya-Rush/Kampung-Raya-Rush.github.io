@@ -419,6 +419,7 @@
     if (s.type === 'task') return screenTask(i);
     if (s.type === 'poemTest') return screenPoemTest(i);
     if (s.type === 'finish') return screenFinish(i);
+    if (s.type === 'signup') return screenSignup();
     show('<p>Unknown page type "' + esc(s.type) + '" in game-config.js</p>');
   }
 
@@ -976,6 +977,7 @@
     if (!state.player) state.player = { id: 'TEST-' + randomCode(4), name: 'Test player', phone: '', startMs: Date.now(), offset: 0, local: true };
   }
   function dbgJump(n) {
+    if (n === 0) { state = blank(); save(); goHome(); return; }   // page 1 = back to the start
     testPlayer();
     state.finish = null; state.step = n;
     STEPS.forEach(function (s, i) {
