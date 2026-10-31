@@ -26,7 +26,7 @@ const GAME_CONFIG = {
   eventName: "Kampung Raya Rush",
 
   // Hashtag printed on the photos and shown to players. Keep the # at the front.
-  eventHashtag: "#Bazzar1961",
+  eventHashtag: "#Bazaar1961",
 
   // Instagram / social link for the [ FOLLOW US ] button on the last screen.
   // Example: "https://www.instagram.com/youraccount/"   (leave "" to hide it)
