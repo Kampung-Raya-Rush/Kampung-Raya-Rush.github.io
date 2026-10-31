@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>QR Codes — Organiser</title>
+  <style>
+    :root { --bg:#0f0d12; --card:#221d2b; --line:#3a3246; --gold:#ffc83a; --red:#ff4a36; --text:#fff8ee; --muted:#cfc4d8; }
+    * { box-sizing: border-box; }
+    body { margin:0; padding:20px; background:var(--bg); color:var(--text); font:500 17px/1.5 system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif; }
+    .wrap { max-width: 980px; margin: 0 auto; }
+    h1 { font: 900 1.8rem 'Arial Black',Arial,sans-serif; margin: 0 0 6px; }
+    .sub { color: var(--muted); margin: 0 0 18px; }
+    .panel { background: var(--card); border: 2px solid var(--line); border-radius: 16px; padding: 16px; margin-bottom: 20px; }
+    label { font-weight: 800; display: block; margin-bottom: 6px; }
+    input[type=text] { width: 100%; padding: 12px; font: 600 1rem ui-monospace, Menlo, monospace; border-radius: 10px; border: 2px solid var(--line); background: #15121b; color: var(--text); }
+    button, .btn { cursor: pointer; border: 0; border-radius: 12px; padding: 14px 18px; font: 900 .95rem 'Arial Black',Arial,sans-serif; background: var(--red); color: #fff; margin: 10px 8px 0 0; }
+    button.alt { background: var(--gold); color: #1a1300; }
+    .warn { background: #3a2f12; border: 2px solid var(--gold); border-radius: 12px; padding: 12px 14px; margin-bottom: 18px; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 18px; }
+    .card { background: var(--card); border: 2px solid var(--line); border-radius: 16px; padding: 16px; text-align: center; break-inside: avoid; }
+    .card h2 { font: 900 1.05rem 'Arial Black',Arial,sans-serif; margin: 0 0 4px; }
+    .card .url { font: 600 .8rem ui-monospace, Menlo, monospace; color: var(--muted); word-break: break-all; margin-bottom: 10px; }
+    .card canvas { width: 240px; height: 240px; max-width: 100%; background: #fff; border-radius: 8px; }
+    .opt { opacity: .8; border-style: dashed; }
+    .small { color: var(--muted); font-size: .9rem; }
+    @media print {
+      body { background: #fff; color: #000; }
+      .panel, .warn, button, .small.noprint { display: none !important; }
+      .card { background: #fff; border: 1px solid #999; color: #000; }
+      .card .url { color: #333; }
+      .grid { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Organiser QR codes</h1>
+  <p class="sub">Not for players. Download each QR, print it and stick it up at the right place.</p>
+
+  <div class="warn" id="fileWarn" hidden>
+    ⚠️ You opened this page from your computer. The QR codes below would point to a file on your computer and won't work for players.
+    Publish the site on GitHub Pages first, open <b>qr-codes.html</b> from the real web address, or paste your published address in the box below.
+  </div>
+
+  <div class="panel">
+    <label for="base">Your game's web address (must end in index.html)</label>
+    <input type="text" id="base" autocomplete="off" spellcheck="false">
+    <button id="regen" type="button">UPDATE QR CODES</button>
+    <button id="printBtn" type="button" class="alt">PRINT SHEET</button>
+    <p class="small" style="margin-bottom:0">
+      Tip: the PRINT SHEET shows checkpoint names for YOU. Players shouldn't see them, so cut the labels off or use DOWNLOAD QR instead (the picture has no text on it).
+    </p>
+  </div>
+
+  <div class="grid" id="grid"></div>
+  <p class="small noprint" id="libMsg"></p>
+</div>
+
+<!-- Free open-source QR library (qrcode-generator, MIT licence) -->
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script>
+<script src="js/game-config.js"></script>
+<script>
+(function () {
+  var grid = document.getElementById('grid');
+  var baseInput = document.getElementById('base');
+
+  // The list of QR codes, built from the route in game-config.js
+  var C = (typeof GAME_CONFIG !== 'undefined') ? GAME_CONFIG : { steps: [] };
+  var items = [{ hash: '', name: 'THE GAME — one QR for everything' }];
+  (C.steps || []).forEach(function (s) {
+    if (s.qr) items.push({ hash: s.qr, name: s.stop + ' — ' + (s.title || s.id) });
+  });
+
+  var isFile = location.protocol === 'file:';
+  document.getElementById('fileWarn').hidden = !isFile;
+
+  var saved = '';
+  try { saved = localStorage.getItem('qrBaseUrl') || ''; } catch (e) {}
+  var guess = location.href.replace(/qr-codes\.html.*$/, 'index.html');
+  baseInput.value = saved || guess;
+
+  function cleanBase() {
+    var b = baseInput.value.trim().split('#')[0].split('?')[0];
+    if (b && !/index\.html$/.test(b)) b = b.replace(/\/?$/, '/') + 'index.html';
+    return b;
+  }
+
+  // Draw a QR onto a canvas at print resolution (about 1200 px)
+  function drawQR(canvas, text) {
+    var qr = qrcode(0, 'M');
+    qr.addData(text); qr.make();
+    var n = qr.getModuleCount(), quiet = 4;
+    var scale = Math.max(4, Math.ceil(1200 / (n + quiet * 2)));
+    var size = (n + quiet * 2) * scale;
+    canvas.width = size; canvas.height = size;
+    var ctx = canvas.getContext('2d');
+    ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, size, size);
+    ctx.fillStyle = '#000';
+    for (var r = 0; r < n; r++)
+      for (var c = 0; c < n; c++)
+        if (qr.isDark(r, c)) ctx.fillRect((c + quiet) * scale, (r + quiet) * scale, scale, scale);
+  }
+
+  function build() {
+    try { localStorage.setItem('qrBaseUrl', baseInput.value.trim()); } catch (e) {}
+    grid.innerHTML = '';
+    if (typeof qrcode === 'undefined') {
+      document.getElementById('libMsg').textContent = 'The QR library did not load. Check your internet connection and refresh this page.';
+      return;
+    }
+    var base = cleanBase();
+    items.forEach(function (it) {
+      var url = base + (it.hash ? '#' + it.hash : '');
+      var card = document.createElement('div');
+      card.className = 'card' + (it.optional ? ' opt' : '');
+      var h = document.createElement('h2'); h.textContent = it.name;
+      var u = document.createElement('div'); u.className = 'url'; u.textContent = url;
+      var cv = document.createElement('canvas');
+      var btn = document.createElement('button'); btn.type = 'button'; btn.textContent = 'DOWNLOAD QR';
+      card.appendChild(h); card.appendChild(u); card.appendChild(cv); card.appendChild(document.createElement('br')); card.appendChild(btn);
+      grid.appendChild(card);
+      drawQR(cv, url);
+      btn.addEventListener('click', function () {
+        cv.toBlob(function (blob) {
+          var a = document.createElement('a');
+          a.href = URL.createObjectURL(blob);
+          a.download = 'qr-' + (it.hash || 'start') + '.png';
+          document.body.appendChild(a); a.click();
+          setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 500);
+        }, 'image/png');
+      });
+    });
+  }
+
+  document.getElementById('regen').addEventListener('click', build);
+  document.getElementById('printBtn').addEventListener('click', function () { window.print(); });
+  build();
+})();
+</script>
+</body>
+</html>
