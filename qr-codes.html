@@ -68,7 +68,7 @@
 
   // The list of QR codes, built from the route in game-config.js
   var C = (typeof GAME_CONFIG !== 'undefined') ? GAME_CONFIG : { steps: [] };
-  var items = [{ hash: '', name: 'START — Bazaar 1961 (sign-up)' }];
+  var items = [{ hash: '', name: 'THE GAME — one QR for everything' }];
   (C.steps || []).forEach(function (s) {
     if (s.qr) items.push({ hash: s.qr, name: s.stop + ' — ' + (s.title || s.id) });
   });

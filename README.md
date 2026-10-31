@@ -8,7 +8,7 @@ organiser dashboard shows it all live.
 - **Game:** https://jade-hash21.github.io/KampungRayaRush/
 - **Testing mode:** https://jade-hash21.github.io/KampungRayaRush/?debug=true
 - **Organiser dashboard:** https://jade-hash21.github.io/KampungRayaRush/dashboard.html
-- **QR codes:** https://jade-hash21.github.io/KampungRayaRush/qr-codes.html
+- **QR code (one for everything):** https://jade-hash21.github.io/KampungRayaRush/qr-codes.html
 
 ---
 
@@ -79,7 +79,7 @@ It refreshes itself every 15 seconds.
 - **Leaderboard:** finishers in order, 🥇🥈🥉 for the top 3, with their time.
 - **Participants:** where each player is right now, a progress bar, when they last did something
   (turns orange after 15 minutes of nothing — maybe they're lost), their running time and start time.
-- **Live activity:** every sign-up, QR scan, finished page, photo and finish, with the time.
+- **Live activity:** every sign-up, finished page, photo and finish, with the time.
 - **Photos:** newest first. Pick one player from the menu to see only theirs. Click a photo to enlarge it or open it in Google Drive.
 - Test players (made in `?debug=true` mode) are hidden unless you tick **Show test players**.
 
@@ -90,18 +90,14 @@ password-protected dashboard. Delete the folder after the event if you don't nee
 
 ---
 
-## 5. QR codes
+## 5. The QR code
 
-Open **qr-codes.html** (link at the top) and **DOWNLOAD QR** for each:
+There is **one** QR code for the whole game — it just opens the game link.
+Open **qr-codes.html** (link at the top), click **DOWNLOAD QR**, and print it for the Bazaar 1961 sign-up table
+(and on posters if you like).
 
-| QR | Put it at |
-|---|---|
-| START | Bazaar 1961 sign-up table |
-| cp1 | Baba Kaya |
-| cp2 | the Mural |
-| cp3 | the Clock Tower |
-| cp4 | Pulse |
-| final | Bazaar 1961 (the finish) |
+Players don't scan anything at the checkpoints. When a clue sends them somewhere new, they press
+**I'M HERE →** once they arrive. Their photos (on the dashboard) show they really went.
 
 ---
 
@@ -120,7 +116,7 @@ Test on a **real iPhone and a real Android phone**: Save, Share, and that the ph
 - [ ] `eventHashtag` and `instagramURL` are set in `js/game-config.js`.
 - [ ] `debugAllowed: false,` in `js/game-config.js` (so players can't skip with `?debug=true`).
 - [ ] Delete your test rows in the **Players**, **Photos** and **Log** tabs (keep row 1) and the test photos in Drive.
-- [ ] QR codes printed and stuck up.
+- [ ] The game QR code is printed for the sign-up table.
 - [ ] Syirin (and anyone else at the finish) knows the PIN.
 - [ ] The dashboard is open on a laptop or tablet at Bazaar 1961.
 - [ ] One full real run on your own phone the day before.
@@ -130,4 +126,3 @@ Test on a **real iPhone and a real Android phone**: Save, Share, and that the ph
 - If a player clears their browser data, they lose their progress and must sign up again (new timer).
 - Pressing STOP MY TIMER twice on the same phone doesn't change the result.
 - Players need mobile data or Wi-Fi at sign-up, for photos to reach you, and at the finish.
-[Uploading README.md…]()
