@@ -89,6 +89,7 @@
     .pic .cap { padding: 8px 10px; font-size: .8rem; }
     .pic .cap b { display: block; font-size: .85rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .pic .cap span { color: var(--muted); display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .test-note { margin: -4px 0 14px; padding: 10px 14px; border: 1px dashed var(--line); border-radius: 12px; color: var(--muted); font-size: .9rem; }
     .empty { color: var(--muted); padding: 18px 4px; text-align: center; grid-column: 1 / -1; }
 
     /* lightbox */
@@ -138,6 +139,8 @@
         <button class="btn" id="logout" type="button">Lock</button>
       </div>
     </div>
+
+    <p class="test-note" id="testNote" hidden></p>
 
     <div class="stats">
       <div class="card stat"><div class="k">Signed up</div><div class="v" id="sSigned">–</div></div>
@@ -257,7 +260,12 @@
     clearInterval(tickTimer); tickTimer = setInterval(tick, 1000);
     setLive('on', 'Live · updated ' + clock(now()));
   }
-  $('refresh').addEventListener('click', refresh);
+  $('refresh').addEventListener('click', function () {
+    var b = $('refresh');
+    if (b.disabled) return;
+    b.disabled = true; b.textContent = 'Refreshing…';
+    refresh().then(function () { b.disabled = false; b.textContent = '↻ Refresh'; });
+  });
   $('showTest').checked = store(TEST_STORE) === '1';
   $('showTest').addEventListener('change', function () { store(TEST_STORE, showTest() ? '1' : '0'); render(); });
 
@@ -269,6 +277,11 @@
     var ps = visiblePlayers();
     var ids = {}; ps.forEach(function (p) { ids[p.id] = true; });
     var photos = (data.photos || []).filter(function (x) { return ids[x.id]; });
+    var hiddenPlayers = (data.players || []).length - ps.length;
+    var hiddenPhotos = (data.photos || []).length - photos.length;
+    $('testNote').hidden = !(hiddenPlayers || hiddenPhotos);
+    $('testNote').textContent = hiddenPlayers + ' test player' + (hiddenPlayers === 1 ? '' : 's') + ' and ' + hiddenPhotos +
+      ' test photo' + (hiddenPhotos === 1 ? '' : 's') + ' are hidden (sign-ups made with ?debug=true). Tick “Show test players” to see them.';
     var done = ps.filter(function (p) { return p.finishMs; });
     $('sSigned').textContent = ps.length;
     $('sRacing').textContent = ps.length - done.length;
