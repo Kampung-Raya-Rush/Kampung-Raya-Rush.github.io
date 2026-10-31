@@ -1,128 +1,170 @@
-# Kampung Raya Rush — beginner's guide
+# Kampung Raya Rush
 
-A phone treasure hunt that runs in the browser. No app needed.
-Players sign up at Bazaar 1961, race through Melaka, and come back.
-A free Google Sheet records everyone's times and photos, and an
-organiser dashboard shows it all live.
+A phone treasure hunt around Melaka that runs in the browser. No app to install.
+Players scan **one QR code**, sign up at Bazaar 1961, race through the checkpoints taking photos,
+and come back to finish. Organisers watch everyone live on a dashboard.
 
-- **Game:** https://jade-hash21.github.io/KampungRayaRush/
-- **Testing mode:** https://jade-hash21.github.io/KampungRayaRush/?debug=true
-- **Organiser dashboard:** https://jade-hash21.github.io/KampungRayaRush/dashboard.html
-- **QR code (one for everything):** https://jade-hash21.github.io/KampungRayaRush/qr-codes.html
+Everything is free: the game is hosted on GitHub Pages, and times and photos are stored
+in a Google Sheet and Google Drive.
 
 ---
 
-## 1. Files
+## Links
 
-| File | What it is |
+| What | Link |
 |---|---|
-| `index.html`, `css/`, `js/game.js`, `sw.js` | the game (don't edit) |
-| `js/game-config.js` | **all the text, questions, clues and settings — edit this one** |
-| `dashboard.html` | the live organiser dashboard |
-| `qr-codes.html` | makes the QR codes |
-| `google-apps-script.gs` | goes into your Google Sheet (part 3) |
-
-To update the site: on GitHub click **Add file → Upload files**, drag the files in, click **Commit changes**.
-If the site doesn't update within a few minutes, open the **Actions** tab and re-run the stuck "pages build and deployment".
+| **The game** (this is what the QR code opens) | https://kampung-raya-rush.github.io/ |
+| Testing mode | https://kampung-raya-rush.github.io/?debug=true |
+| **Organiser dashboard** (password) | https://kampung-raya-rush.github.io/dashboard.html |
+| QR code maker | https://kampung-raya-rush.github.io/qr-codes.html |
 
 ---
 
-## 2. How the hunt works
+## The route
 
-1. **START — Bazaar 1961:** sign up (name + phone). The timer starts.
-2. **CP1 — Baba Kaya:** 6-question culture quiz, then the jigsaw puzzle.
-3. **CP2 — Mural:** memorise the poem, then pose like the mural and take a photo.
-4. **CP3 — Clock Tower:** 3 people on one page, a photo + their one word each.
-5. **Trail:** pink cow, golden horse, orangutan (one page each, photo).
-6. **CP4 — Pulse:** postbox photo, cross the bridge, chicken holding a bun.
-7. **FINAL — Bazaar 1961:** photos with a vendor, a workshop and an artwork.
-   Then they find **Syirin** (white bucket hat), say the poem, and Syirin types the PIN to stop the timer.
-8. Last screen: *"Congrats!! You finished the Kampung Raya Rush in the duration of …"*
+| Stop | What players do |
+|---|---|
+| **START — Bazaar 1961** | Scan the QR, sign up with name + phone. **The timer starts.** |
+| **CP1 — Baba Kaya** | 6-question Peranakan & Malay culture quiz, then a jigsaw puzzle that shows the next place. |
+| **CP2 — Mural** | Memorise the poem (shown for 30 seconds), then pose like the mural and take a photo. |
+| **CP3 — Clock Tower** | One page, three people: a photo with each and their one word for Melaka. |
+| **Trail** | Pink cow, golden horse, orangutan: one page and one photo each. |
+| **CP4 — Pulse** | Postbox photo, cross the bridge, chicken holding a bun. |
+| **FINAL — Bazaar 1961** | Photos with a vendor, a workshop and an artwork. Then find **Syirin** (white bucket hat) and say the poem. Syirin types the PIN, and **the timer stops.** |
 
-**Photos:** *Save* puts the photo on the phone (iPhone: tap **Save Image**), *Share* opens Instagram, WhatsApp and more.
-The first time a photo is saved or shared, a copy goes to your Google Drive and appears on the dashboard.
+Last screen: *"Congrats!! You finished the Kampung Raya Rush in the duration of …"*
 
----
-
-## 3. Set up the Google Sheet (free — do this once)
-
-1. Go to **sheets.google.com** → **Blank spreadsheet**. Name it `Kampung Raya Rush results`.
-2. Click **Extensions → Apps Script**.
-3. Delete everything in the code box. Open `google-apps-script.gs`, copy **all** of it, paste it in.
-4. Change the settings at the top:
-   - `ORGANISER_PIN` — the number Syirin types at the finish (default `1961`).
-   - `DASHBOARD_PASSWORD` — the password for the dashboard. **Change it from `change-me`.**
-   - `MIN_MINUTES` — anyone faster than this is marked **CHECK** and gets no place (default 20).
-5. Click 💾 **Save**.
-6. Pick **setup** from the function list at the top and click **▶ Run**.
-   Google asks for permission (Sheets + Drive): **Review permissions → your account → Advanced → Go to (unsafe) → Allow**.
-   ("Unsafe" just means you wrote the script yourself.)
-   Your sheet now has 3 tabs — **Players**, **Photos**, **Log** — and your Google Drive has a folder **Kampung Raya Rush photos**.
-7. Click **Deploy → New deployment** → ⚙️ → **Web app**.
-   - Execute as: **Me**
-   - Who has access: **Anyone**
-   - **Deploy**, then copy the **Web app URL** (ends in `/exec`).
-8. On GitHub open `js/game-config.js`, click the pencil, paste it:
-   `serverURL: "https://script.google.com/macros/s/....../exec",`
-   → **Commit changes**.
-
-**Changed the script later?** Deploy → **Manage deployments** → ✏️ → Version: **New version** → Deploy. The URL stays the same.
+There are no QR codes at the checkpoints. When a clue sends players somewhere new, they press
+**I'M HERE →** when they arrive. Their photos on the dashboard show they really went.
 
 ---
 
-## 4. The organiser dashboard
+## Photos
 
-Open **https://jade-hash21.github.io/KampungRayaRush/dashboard.html** on a laptop, tablet or phone and type your `DASHBOARD_PASSWORD`.
-It refreshes itself every 15 seconds.
+- **Save to my phone:** on iPhone a menu opens, tap **Save Image**. On Android it saves to Gallery / Downloads.
+- **Share:** opens the phone's share menu (Instagram, WhatsApp and more).
+- **Copy #hashtag:** copies the hashtag for the caption.
+- Every photo gets a footer with the date, time and hashtag.
+- The **first time** a photo is saved or shared, a copy goes to the organisers' Google Drive and appears on the dashboard.
+  Taking a photo without saving or sharing it does **not** send it.
+- Players must open the game in **Safari or Chrome**. Saving doesn't work inside Instagram or WhatsApp,
+  and the game warns them if they're there.
+
+---
+
+## Organiser dashboard
+
+Open https://kampung-raya-rush.github.io/dashboard.html and type the dashboard password.
+It updates itself every 15 seconds. **↻ Refresh** updates it straight away.
 
 - **Top numbers:** signed up, still on the course, finished, photos received.
-- **Leaderboard:** finishers in order, 🥇🥈🥉 for the top 3, with their time.
-- **Participants:** where each player is right now, a progress bar, when they last did something
-  (turns orange after 15 minutes of nothing — maybe they're lost), their running time and start time.
+- **Leaderboard:** finishers in order with 🥇🥈🥉 and their times.
+- **Participants:** each player's current page, a progress bar, last activity (turns **orange** after 15 minutes
+  of nothing, so they may be lost), running time and start time.
 - **Live activity:** every sign-up, finished page, photo and finish, with the time.
-- **Photos:** newest first. Pick one player from the menu to see only theirs. Click a photo to enlarge it or open it in Google Drive.
-- Test players (made in `?debug=true` mode) are hidden unless you tick **Show test players**.
+- **Photos:** newest first. Filter by player, click to enlarge or open in Google Drive.
+- **Test players** (anyone who signed up through `?debug=true`) and their photos are **hidden** unless you tick
+  **Show test players**. A note at the top tells you how many are hidden.
+- Anyone who finishes faster than 20 minutes is marked **CHECK** and gets no place. You decide what to do.
 
-The same information is in the Google Sheet if you ever need it.
-
-**Privacy:** photos in the Drive folder can be opened by anyone who has a photo's link. The links are only shown on the
-password-protected dashboard. Delete the folder after the event if you don't need the photos.
-
----
-
-## 5. The QR code
-
-There is **one** QR code for the whole game — it just opens the game link.
-Open **qr-codes.html** (link at the top), click **DOWNLOAD QR**, and print it for the Bazaar 1961 sign-up table
-(and on posters if you like).
-
-Players don't scan anything at the checkpoints. When a clue sends them somewhere new, they press
-**I'M HERE →** once they arrive. Their photos (on the dashboard) show they really went.
+The same data is in the Google Sheet (tabs **Players**, **Photos**, **Log**) and the photos are in the
+Drive folder **Kampung Raya Rush photos**.
 
 ---
 
-## 6. Testing
+## Files in this repository
 
-Use the testing link (top of this page). A red panel at the bottom lets you **jump to any page**, **skip** a page or **reset**.
-Test sign-ups are marked **TEST** and never get a place. Test photos still upload, so you can check the dashboard.
+| File | What it is | Edit it? |
+|---|---|---|
+| `js/game-config.js` | All the text, questions, clues, hints, poem and settings | **Yes, this is the one to edit** |
+| `index.html`, `js/game.js`, `css/style.css` | The game itself | No |
+| `sw.js` | Lets the game open on weak mobile signal | No |
+| `dashboard.html` | The organiser dashboard | No |
+| `qr-codes.html` | Makes the QR code | No |
+| `google-apps-script.gs` | The code that runs inside the Google Sheet | Only the settings at the top |
+| `README.md` | This guide | — |
 
-Test on a **real iPhone and a real Android phone**: Save, Share, and that the photo shows up on the dashboard.
+**To change something on the site:** open the file on GitHub, click the ✏️ pencil, edit, then **Commit changes**.
+Or use **Add file → Upload files** to replace a file. The site updates within a few minutes.
 
 ---
 
-## 7. Event-day checklist
+## Editing the game (`js/game-config.js`)
 
-- [ ] `serverURL` is filled in; PIN and dashboard password are set in the Google script.
-- [ ] `eventHashtag` and `instagramURL` are set in `js/game-config.js`.
-- [ ] `debugAllowed: false,` in `js/game-config.js` (so players can't skip with `?debug=true`).
-- [ ] Delete your test rows in the **Players**, **Photos** and **Log** tabs (keep row 1) and the test photos in Drive.
-- [ ] The game QR code is printed for the sign-up table.
+- Only change text **inside "quotation marks"**. Don't delete commas or quotation marks.
+- `\n` starts a new line.
+- Quiz answers ignore capital letters, spaces and punctuation.
+
+| To change… | Look for… |
+|---|---|
+| Hashtag on photos | `eventHashtag` (currently `#Bazzar1961`) |
+| Instagram "Follow us" button | `instagramURL` |
+| Sign-up form | `signup:` |
+| The poem | `poem:` → `lines` |
+| Any page, clue or hint | `steps:`, one block per page |
+| The last screen | `reveal:` |
+| Turn testing mode off | `debugAllowed: false,` |
+| Google Sheet connection | `serverURL` (already set, don't change unless you redeploy) |
+
+---
+
+## Google Sheet (already set up)
+
+The Sheet is connected through `serverURL` in `js/game-config.js`.
+Settings live at the top of the script (**Extensions → Apps Script** in the Sheet):
+
+- `ORGANISER_PIN`: the number Syirin types at the finish
+- `DASHBOARD_PASSWORD`: the dashboard password
+- `MIN_MINUTES`: faster than this is marked CHECK (default 20)
+
+**If you change the script:** click **Deploy → Manage deployments → ✏️ → Version: New version → Deploy**.
+Keep **Who has access: Anyone**. The URL stays the same.
+
+**If you ever make a brand-new deployment**, you get a new URL. Paste it into `serverURL` in
+`js/game-config.js` and upload that file.
+
+---
+
+## Testing
+
+1. Open the testing link: https://kampung-raya-rush.github.io/?debug=true
+2. Use the red panel at the bottom: **Jump to that page**, **Skip current page**, **Reset entire hunt**.
+3. Test sign-ups are marked **TEST**. They never get a place, but their photos still upload, so you can check the dashboard
+   (tick **Show test players**).
+4. Test on a **real iPhone and a real Android phone**: Save, Share, and check the photo reaches the dashboard.
+
+---
+
+## Event-day checklist
+
+- [ ] In `js/game-config.js`: set `debugAllowed: false,` and upload it.
+- [ ] `eventHashtag` and `instagramURL` are correct.
+- [ ] In the Google Sheet, delete the test rows in **Players**, **Photos** and **Log** (keep row 1 in each).
+- [ ] Delete the test photos in the Drive folder **Kampung Raya Rush photos**.
+- [ ] Print the QR code from the QR maker and check it opens the game.
 - [ ] Syirin (and anyone else at the finish) knows the PIN.
 - [ ] The dashboard is open on a laptop or tablet at Bazaar 1961.
-- [ ] One full real run on your own phone the day before.
+- [ ] Remind players: open the link in **Safari or Chrome**, and press **Save** or **Share** on every photo.
 
-### Good to know
+---
+
+## Troubleshooting
+
+| Problem | Fix |
+|---|---|
+| Site shows **404** or old content after an upload | Wait 2–5 minutes. If it's still wrong, open the **Actions** tab, click the stuck "pages build and deployment", **Cancel**, then **Re-run all jobs**. |
+| Phone still shows the old version | Refresh twice, or close the tab and open the link again. |
+| Dashboard has no photos | Tick **Show test players** (test photos are hidden). Photos only arrive when a player presses **Save** or **Share**. |
+| Sign-up says it can't reach the timer | Check the phone has internet. Check the Google script is still deployed with **Who has access: Anyone**. |
+| "Unknown page type" message | In testing mode press **Reset entire hunt**. |
+| Player lost their progress | They cleared their browser data. They need to sign up again (new timer). |
+| Wrong PIN at the finish | The PIN is `ORGANISER_PIN` in the Google script. |
+
+---
+
+## Good to know
+
 - The timer runs on Google's clock, so changing a phone's time does nothing.
-- If a player clears their browser data, they lose their progress and must sign up again (new timer).
-- Pressing STOP MY TIMER twice on the same phone doesn't change the result.
-- Players need mobile data or Wi-Fi at sign-up, for photos to reach you, and at the finish.
+- Progress is saved on each phone. Players can close the page and come back to the same spot.
+- Pressing **STOP MY TIMER** twice on the same phone doesn't change the result.
+- Players need mobile data or Wi-Fi to sign up, to send photos, and at the finish.
