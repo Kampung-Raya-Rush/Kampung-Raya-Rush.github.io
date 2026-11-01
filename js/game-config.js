@@ -60,7 +60,7 @@ const GAME_CONFIG = {
      The organiser PIN and the dashboard password are NOT in this file
      (this file is public). They live in the Google script.
      --------------------------------------------------------------- */
-  serverURL: "https://script.google.com/macros/s/AKfycbyxklKdjdPcv3CvC43whrBw2k1oTe-6icQU9MPD8mvv_D40yHlbEt3qb0gbDaEJfBGQ/exec",
+  serverURL: "https://script.google.com/macros/s/AKfycbzunR7JPsz_NIzBkpG54t1cjz8zZEq4SRGiWzP6bH5Qji-ojT-KpSflehha7bOFaBDG/exec",
 
   // true = at the very end the organiser types their PIN on the player's
   //        phone. That stops the timer. (Stops people skipping to the end.)
