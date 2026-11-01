@@ -148,12 +148,12 @@ function start(b) {
   row[COL['Last step'] - 1] = 'signed up';
   row[COL['Last step at'] - 1] = now;
   row[COL['Steps done'] - 1] = 1;
-  row[COL['Notes'] - 1] = b.test ? 'TEST (debug mode)' : '';
+  row[COL['Notes'] - 1] = b.test ? 'TEST (debug mode)' : (Number(b.replay) > 0 ? 'REPLAY (game ' + (Number(b.replay) + 1) + ' on this phone)' : '');
   row[COL['Start ms'] - 1] = now.getTime();
   row[COL['Last ms'] - 1] = now.getTime();
   for (var i = 0; i < HEAD.length; i++) if (row[i] === undefined) row[i] = '';
   sh.appendRow(row);
-  log(id, clean(b.name), 'Signed up — timer started', now);
+  log(id, clean(b.name), Number(b.replay) > 0 ? 'Signed up again (replay) — timer started' : 'Signed up — timer started', now);
   return { ok: true, id: id, startMs: now.getTime(), serverNow: Date.now() };
 }
 
@@ -202,7 +202,8 @@ function finish(b) {
   var notes = String(vals[COL['Notes'] - 1] || '');
   var place = '';
 
-  if (!isTest) {
+  var isReplay = notes.indexOf('REPLAY') === 0;   // played before on this phone: no place
+  if (!isTest && !isReplay) {
     if (totalMs < MIN_MINUTES * 60000) {
       notes = (notes ? notes + ' / ' : '') + 'CHECK: finished in under ' + MIN_MINUTES + ' min';
     } else {

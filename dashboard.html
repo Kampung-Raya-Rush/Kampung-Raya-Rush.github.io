@@ -208,6 +208,9 @@
   function stepTitle(id) { for (var i = 0; i < STEPS.length; i++) if (STEPS[i].id === id) return STEPS[i].title || id; return id; }
   function thumb(id, w) { return 'https://drive.google.com/thumbnail?id=' + encodeURIComponent(id) + '&sz=w' + (w || 500); }
   function isTest(p) { return p.id.indexOf('TEST-') === 0; }
+  function isReplay(p) { return String(p.notes || '').indexOf('REPLAY') === 0; }
+  // finished but no place: a replay, or faster than MIN_MINUTES (CHECK)
+  function noPlaceTag(p) { return isReplay(p) ? '<span class="tag test" title="Played before on this phone">REPLAY</span>' : '<span class="tag check" title="Finished suspiciously fast">CHECK</span>'; }
   function showTest() { return $('showTest').checked; }
 
   document.title = 'Dashboard — ' + (C.eventName || 'Hunt');
@@ -296,7 +299,7 @@
     });
     $('lbBody').innerHTML = lb.length ? lb.map(function (p) {
       var medal = { 1: '🥇', 2: '🥈', 3: '🥉' }[p.place];
-      return '<tr class="' + (p.place && p.place <= 3 ? 'top' : '') + '"><td class="num">' + (medal ? '<span class="medal">' + medal + '</span> ' : '') + (p.place ? ordinal(p.place) : '<span class="tag check">CHECK</span>') + '</td>' +
+      return '<tr class="' + (p.place && p.place <= 3 ? 'top' : '') + '"><td class="num">' + (medal ? '<span class="medal">' + medal + '</span> ' : '') + (p.place ? ordinal(p.place) : noPlaceTag(p)) + '</td>' +
         '<td><div class="name">' + esc(p.name) + '</div><div class="phone">' + esc(p.phone) + '</div></td>' +
         '<td class="num">' + dur(p.finishMs - p.startMs) + '</td><td class="num hide-sm">' + clock(p.finishMs) + '</td></tr>';
     }).join('') : '<tr><td colspan="4" class="empty">Nobody has finished yet.</td></tr>';
@@ -312,8 +315,8 @@
       var at = p.finishMs ? 'Finished' : (STEPS[p.stepsDone] ? (STEPS[p.stepsDone].title || STEPS[p.stepsDone].id) : '–');
       var pct = p.finishMs ? 100 : Math.round(Math.min(p.stepsDone, total) * 100 / total);
       var status = isTest(p) ? '<span class="tag test">TEST</span>'
-        : p.finishMs ? (p.place ? '<span class="tag done">' + ({ 1: '🥇 ', 2: '🥈 ', 3: '🥉 ' }[p.place] || '') + 'FINISHED ' + ordinal(p.place) + '</span>' : '<span class="tag check">CHECK</span>')
-        : '<span class="tag race">RACING</span>';
+        : p.finishMs ? (p.place ? '<span class="tag done">' + ({ 1: '🥇 ', 2: '🥈 ', 3: '🥉 ' }[p.place] || '') + 'FINISHED ' + ordinal(p.place) + '</span>' : noPlaceTag(p))
+        : '<span class="tag race">RACING</span>' + (isReplay(p) ? ' <span class="tag test">REPLAY</span>' : '');
       return '<tr data-id="' + esc(p.id) + '"><td><div class="name">' + esc(p.name) + '</div><div class="phone">' + esc(p.phone) + '</div></td>' +
         '<td>' + esc(at) + (p.finishMs ? '' : ' <span class="muted">(' + Math.min(p.stepsDone + 1, total) + '/' + total + ')</span>') +
           '<div class="pbar"><i style="width:' + pct + '%"></i></div></td>' +

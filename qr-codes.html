@@ -68,7 +68,7 @@
 
   // The list of QR codes, built from the route in game-config.js
   var C = (typeof GAME_CONFIG !== 'undefined') ? GAME_CONFIG : { steps: [] };
-  var items = [{ hash: '', name: 'THE GAME — one QR for everything' }];
+  var items = [{ hash: 'signup', name: 'THE GAME — opens straight to sign-up' }];
   (C.steps || []).forEach(function (s) {
     if (s.qr) items.push({ hash: s.qr, name: s.stop + ' — ' + (s.title || s.id) });
   });
@@ -126,7 +126,7 @@
         cv.toBlob(function (blob) {
           var a = document.createElement('a');
           a.href = URL.createObjectURL(blob);
-          a.download = 'qr-' + (it.hash || 'start') + '.png';
+          a.download = 'qr-kampung-raya-rush.png';
           document.body.appendChild(a); a.click();
           setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 500);
         }, 'image/png');

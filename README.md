@@ -13,7 +13,8 @@ in a Google Sheet and Google Drive.
 
 | What | Link |
 |---|---|
-| **The game** (this is what the QR code opens) | https://kampung-raya-rush.github.io/ |
+| **Link to send players** (opens straight to sign-up; the QR code opens this too) | https://kampung-raya-rush.github.io/#signup |
+| The game (opening screen) | https://kampung-raya-rush.github.io/ |
 | Testing mode | https://kampung-raya-rush.github.io/?debug=true |
 | **Organiser dashboard** (password) | https://kampung-raya-rush.github.io/dashboard.html |
 | QR code maker | https://kampung-raya-rush.github.io/qr-codes.html |
@@ -33,6 +34,11 @@ in a Google Sheet and Google Drive.
 | **FINAL — Bazaar 1961** | Photo with a vendor, then find a specific artwork (its picture is shown on screen) and take a photo with it. Then find **Syirin** (white bucket hat) and say the poem. Syirin types the PIN, and **the timer stops.** |
 
 Last screen: *"Congrats!! You finished the Kampung Raya Rush in the duration of …"*
+
+After finishing, players can:
+- **Look back at every page** ("Your journey"): their answers, the clues, and they can take/save photos again.
+- **Play again**: starts a fresh game with a new timer. A replay is marked **REPLAY** in the sheet and on the dashboard
+  and never gets a place, so it can't push a real player off the leaderboard.
 
 There are no QR codes at the checkpoints. When a clue sends players somewhere new, they press
 **I'M HERE →** when they arrive. Their photos on the dashboard show they really went.
@@ -66,6 +72,7 @@ It updates itself every 15 seconds. **↻ Refresh** updates it straight away.
 - **Test players** (anyone who signed up through `?debug=true`) and their photos are **hidden** unless you tick
   **Show test players**. A note at the top tells you how many are hidden.
 - Anyone who finishes faster than 20 minutes is marked **CHECK** and gets no place. You decide what to do.
+- A second game on the same phone (Play again) is marked **REPLAY** and gets no place.
 
 The same data is in the Google Sheet (tabs **Players**, **Photos**, **Log**) and the photos are in the
 Drive folder **Kampung Raya Rush photos**.
